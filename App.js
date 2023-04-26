@@ -2,12 +2,28 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import CarrosDiponibles from './screens/carrosDisponibles.js';
+import RentaCarros from './screens/rentaCarros.js';
 
 
-const Stack = createStackNavigator();
+// Arreglo de objetos para quemar los usuarios 
 
+let users = [{ username: 'Papablo', name: 'Pablo', password: 123456, rol: '1'
+}, {
+  username: 'jairito', name: 'Jairo ', password: 'Yoyo452', rol: '2'
+},
+ {
+  username: 'Pedrolo', name: 'Pedro ', password: 'Lopez45', rol: '3'
+},
+]
+
+// Instanciamiento de stackNavigator
+
+
+const Stack = createNativeStackNavigator();
 
 const Login = () => {
   const navigation = useNavigation();
@@ -15,8 +31,10 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
+  let findUser = users.find(user => user.username == username && user.password == password)
+
   const handleLogin = () => {
-    if (username === 'usuario' && password === 'contraseña') {
+    if (findUser != undefined) {
       navigation.navigate('Home');
     } else {
       setError('Usuario o contraseña incorrectos');
@@ -24,21 +42,25 @@ const Login = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text style={styles.title}>Iniciar sesión</Text>
       <TextInput
         label="Nombre de usuario"
+        mode='outlined'
         value={username}
-        onChangeText={setUsername}
+        onChangeText={username => setUsername(username)}
+        style ={{margin: 30}}
       />
       <TextInput
         label="Contraseña"
+        mode='outlined'
         value={password}
-        onChangeText={setPassword}
+        onChangeText={password => setPassword(password)}
+        style ={{marginBottom: 40}}
         secureTextEntry
       />
       {error ? <Text style={styles.error}>{error}</Text> : null}
-      <Button mode="contained" onPress={handleLogin}>
+      <Button mode="contained" onPress={handleLogin} >
         Ingresar
       </Button>
     </View>
@@ -48,7 +70,7 @@ const Login = () => {
 const HomeScreen = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Bienvenido a la aplicación</Text>
+      <Text style={styles.title}>Pantalla de Inicio</Text>
     </View>
   );
 };
@@ -69,18 +91,12 @@ const App = () => {
   return (
     <NavigationContainer>
       <BottomTab.Navigator>
-        <BottomTab.Screen name="Inicio" component={MainStackNavigator} />
-        <BottomTab.Screen name="Perfil" component={ProfileScreen} />
+        <BottomTab.Screen name="Usuario" component={MainStackNavigator} options={{headerShown:false
+        }}/>
+        <BottomTab.Screen name="Carros Disponibles" component={CarrosDiponibles} />
+        <BottomTab.Screen name="Rentar Carro" component={RentaCarros} />
       </BottomTab.Navigator>
     </NavigationContainer>
-  );
-};
-
-const ProfileScreen = () => {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Perfil</Text>
-    </View>
   );
 };
 

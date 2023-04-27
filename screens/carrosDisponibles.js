@@ -3,10 +3,15 @@ import { View, Text, StyleSheet } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
+// Arreglo vacío que vamos a ir llenando
 
 let carros =[]
 
+//Funcion default que vamos a exportar (Funciona similar a una clase)
+
 export default function CarrosDiponibles(){
+
+// Declaración de variables con su instancia de estado useState
 
     const [id, setId] = useState('')
     const [marca, setMarca] = useState('')
@@ -14,8 +19,12 @@ export default function CarrosDiponibles(){
     const [motor, setMotor] = useState('')
     const [disponible, setDisponible] = useState('')
 
+// Función de guardar un carro en el arreglo. 
+
+// Agregar switch de disponible y validarlo cuando esté activado/desactivado.
+
     let guardarCarro = () =>{
-        if(id != "" && marca != "" && modelo != "" && motor != "" && disponible != "" ){
+        if(id != "" && marca != "" && modelo != "" && motor != "" ){
         const carro = {
             id: id,
             marca: marca,
@@ -31,8 +40,41 @@ export default function CarrosDiponibles(){
         }
     
     }
-    
 
+	let mostrarCarro = () => {
+		if (id !== ""){
+			const carroEncontrado = carros.find(carro => carro.id == id)
+				if(carroEncontrado){
+				setMarca(carroEncontrado.marca)
+				setModelo(carroEncontrado.modelo)
+				setMotor(carroEncontrado.motor)
+				setDisponible(carroEncontrado.disponible)
+		}
+			else {
+				alert('No se encontró el carro')
+			}	
+	}
+	else{
+		alert('Ingrese un Id para poder buscar un carro.')
+	}
+}
+
+
+
+
+
+
+    
+// Funcion de limpiar los campos
+
+	let limpiarCampos = () => {
+	setId('');
+	setMarca('');
+	setModelo('');
+	setMotor('');
+	setDisponible('');
+	
+}
 
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -68,27 +110,22 @@ export default function CarrosDiponibles(){
           value={motor}
           style ={{margin: 10}}
         />
-
-      <TextInput
-          label='Ingrese motor o cilindraje del carro'
-          mode='outlined'
-          onChangeText={disponible => setDisponible(disponible)}
-          value={disponible}
-          style ={{margin: 10}}
-        />
             {/* {error ? <Text style={styles.error}>{error}</Text> : null} */}
-      <Button mode="contained" onPress={guardarCarro} >
-        Agregar carro
+
+      <Button mode="contained" onPress={guardarCarro} style ={{marginBottom: 30}}>
+        Agregar Carro
       </Button>
+      <Button mode="contained" onPress={mostrarCarro} style ={{marginBottom: 30}}>
+        Mostrar Carro
+      </Button>
+      <Button mode="contained" onPress={limpiarCampos}>
+        Limpiar Datos
+      </Button>
+
       </View>
-      
     );
   };
   
-
-
-
-
 
 const styles = StyleSheet.create({
     container: {

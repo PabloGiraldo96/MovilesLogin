@@ -1,6 +1,7 @@
+import styles from './css/styles.js';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { TextInput, Button } from 'react-native-paper';
+import { TextInput, Button, Card } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -25,6 +26,8 @@ let users = [{ username: 'Papablo', name: 'Pablo', password: 123456, rol: '1'
 
 const Stack = createNativeStackNavigator();
 
+//Creacion de la función principal Login donde va la pantalla de inicio de sesión.
+
 const Login = () => {
   const navigation = useNavigation();
   const [username, setUsername] = useState('');
@@ -42,27 +45,29 @@ const Login = () => {
   };
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text style={styles.title}>Iniciar sesión</Text>
-      <TextInput
-        label="Nombre de usuario"
-        mode='outlined'
-        value={username}
-        onChangeText={username => setUsername(username)}
-        style ={{margin: 30}}
-      />
-      <TextInput
-        label="Contraseña"
-        mode='outlined'
-        value={password}
-        onChangeText={password => setPassword(password)}
-        style ={{marginBottom: 40}}
-        secureTextEntry
-      />
-      {error ? <Text style={styles.error}>{error}</Text> : null}
-      <Button mode="contained" onPress={handleLogin} >
-        Ingresar
-      </Button>
+    <View style={styles.container}>
+      <Card style={styles.card}>
+        <Text style={styles.title}>Iniciar sesión</Text>
+        <TextInput
+          style={styles.textInput}
+          label="Nombre de usuario"
+          mode='outlined'
+          value={username}
+          onChangeText={username => setUsername(username)}
+        />
+        <TextInput
+          style={styles.textInput}
+          label="Contraseña"
+          mode='outlined'
+          value={password}
+          onChangeText={password => setPassword(password)}
+          secureTextEntry
+        />
+        {error ? <Text style={styles.error}>{error}</Text> : null}
+        <Button mode="contained" onPress={handleLogin} style={styles.button}>
+          Ingresar
+        </Button>
+      </Card>
     </View>
   );
 };
@@ -100,22 +105,5 @@ const App = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  error: {
-    color: 'red',
-    marginBottom: 10,
-  },
-});
 
 export default App;

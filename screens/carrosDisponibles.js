@@ -21,10 +21,8 @@ export default function CarrosDiponibles(){
 
 // Función de guardar un carro en el arreglo. 
 
-// Agregar switch de disponible y validarlo cuando esté activado/desactivado.
-
     let guardarCarro = () =>{
-        if(id != "" && marca != "" && modelo != "" && motor != "" ){
+        if(id != "" && marca != "" && modelo != "" && motor != "" && disponible != "" ){
         const carro = {
             id: id,
             marca: marca,
@@ -51,11 +49,11 @@ export default function CarrosDiponibles(){
 				setDisponible(carroEncontrado.disponible)
 		}
 			else {
-				{error ? <Text style={styles.error}>{error}</Text> : null}
+				alert('No se encontró el carro')
 			}	
 	}
 	else{
-		{error ? <Text style={styles.error}>Ingrese un Id para buscar un carro </Text> : null}
+		alert('Ingrese un Id para poder buscar un carro.')
 	}
 }
 
@@ -109,6 +107,14 @@ export default function CarrosDiponibles(){
           onChangeText={motor => setMotor(motor)}
           value={motor}
           style ={{margin: 10}}
+        />
+
+      <TextInput
+          label='Ingrese motor o cilindraje del carro'
+          mode='outlined'
+          onChangeText={disponible => setDisponible(disponible)}
+          value={disponible}
+          style ={{marginBottom: 30}}
         />
             {/* {error ? <Text style={styles.error}>{error}</Text> : null} */}
 

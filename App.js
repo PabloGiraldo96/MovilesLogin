@@ -60,7 +60,7 @@ const Login = () => {
         secureTextEntry
       />
       {error ? <Text style={styles.error}>{error}</Text> : null}
-      <Button mode="contained" onPress={handleLogin}>
+      <Button mode="contained" onPress={handleLogin} >
         Ingresar
       </Button>
     </View>

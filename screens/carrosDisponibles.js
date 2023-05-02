@@ -1,74 +1,80 @@
 import styles from '../css/styles.js';
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import { TextInput, Button, Card } from 'react-native-paper';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 // Arreglo vacío que vamos a ir llenando
 
-let carros =[]
-
+export const carrosDisponibles = [
+]
 //Funcion default que vamos a exportar (Funciona similar a una clase)
 
 export default function CarrosDiponibles(){
 
 // Declaración de variables con su instancia de estado useState
 
-    const [id, setId] = useState('')
-    const [marca, setMarca] = useState('')
-    const [modelo, setModelo] = useState('')
-    const [motor, setMotor] = useState('')
-    const [disponible, setDisponible] = useState('')
+const [placa, setPlaca] = useState('')
+const [marca, setMarca] = useState('')
+const [estado, setEstado] = useState('')
+const [error, setError] = useState('');
 
 // Función de guardar un carro en el arreglo. 
 
-// Agregar switch de disponible y validarlo cuando esté activado/desactivado.
+// Mostrar el carro Disponible; en la capa rentaCarros vamos a manejar ese Booleano a false.
+
+// Validaciones regex para confiamr que en la marca van solo letras y en la placa, letras y numeros. 
+
+const placaRegex = /^[A-Za-z0-9]+$/; // Expresión regular para validar letras y números
+const marcaRegex = /^[A-Za-z ]+$/; // Expresión regular para validar solo letras
+
+let isValidPlaca = placaRegex.test(placa);
+let isValidMarca = marcaRegex.test(marca)
 
     let guardarCarro = () =>{
-        if(id != "" && marca != "" && modelo != "" && motor != "" ){
-        const carro = {
-            id: id,
+        if(placa != "" && marca != ""){
+			if(isValidPlaca && isValidMarca){
+        	const carro = {
+            placa: placa,
             marca: marca,
-            modelo: modelo,
-            motor: motor,
-            disponible: disponible
+            estado: estado
             }
-            carros.push(carro)
+            carrosDisponibles.push(carro)
             alert("Carro guardado correctamente.")
-        }
+			setPlaca('');
+			setMarca('');
+		} else{
+		setError ("La marca debe ser letras únicamente")
+		}
+    }
         else {
-            alert("Ingrese por favor los campos para registrar el carro.")
+            setError("Ingrese por favor los campos para registrar el carro.")
         }
     
     }
 
 	let mostrarCarro = () => {
-		if (id !== ""){
-			const carroEncontrado = carros.find(carro => carro.id == id)
+		if (placa !== ""){
+			const carroEncontrado = carrosDisponibles.find(carro => carro.placa == placa)
 				if(carroEncontrado){
 				setMarca(carroEncontrado.marca)
-				setModelo(carroEncontrado.modelo)
-				setMotor(carroEncontrado.motor)
-				setDisponible(carroEncontrado.disponible)
+				setEstado(true)
 		}
 			else {
-				alert('No se encontró el carro')
+				setError('No se encontró el carro')
 			}	
 	}
 	else{
-		alert('Ingrese un Id para poder buscar un carro.')
+		setError('Ingrese la placa para poder buscar un carro.')
 	}
 }
-
     
 // Funcion de limpiar los campos
 
 	let limpiarCampos = () => {
-	setId('');
+	setPlaca('');
 	setMarca('');
-	setModelo('');
-	setMotor('');
-	setDisponible('');
+	setEstado('');
 	
 }
 
@@ -78,12 +84,15 @@ export default function CarrosDiponibles(){
 			<Text style={styles.title}>Agregar Carro</Text>
 			<TextInput
 				style={styles.textInput}
-				label="Ingrese Id del carro"
+				label="Ingrese la placa del carro"
 				mode='outlined'
-				value={id}
-				onChangeText={id => setId(id)}
+				value={placa}
+				onChangeText={placa => setPlaca(placa)}
 		/>
-		
+		        {/*operador Ternario con native */}
+        {error ?
+         <Text style={styles.error}>{error}</Text> : 
+          null}
 		<TextInput
 			style={styles.textInput}
 			label='Ingrese marca del carro'
@@ -91,24 +100,8 @@ export default function CarrosDiponibles(){
 			onChangeText={marca => setMarca(marca)}
 			value={marca}
 			/>
+			<Text style={styles.text} value={estado}> El carro está disponible</Text>
 		
-		<TextInput
-			style={styles.textInput}
-			label='Ingrese modelo del carro'
-			mode='outlined'
-			onChangeText={modelo => setModelo(modelo)}
-			value={modelo}
-			/>
-		
-		<TextInput
-			style={styles.textInput}
-			label='Ingrese motor o cilindraje del carro'
-			mode='outlined'
-			onChangeText={motor => setMotor(motor)}
-			value={motor}
-			/>
-				{/* {error ? <Text style={styles.error}>{error}</Text> : null} */}
-
 		<Button mode="contained" onPress={guardarCarro} style={styles.button}>
 			Agregar Carro
 		</Button>

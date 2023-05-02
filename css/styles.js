@@ -12,6 +12,14 @@ import { StyleSheet } from 'react-native';
     fontWeight: 'bold',
     marginBottom: 20,
   },
+  phrase: {
+    fontSize: 18,
+    color: 'blue',
+    marginTop: 25,
+  },
+  text: {
+    fontSize: 16,
+  },
   error: {
     color: 'red',
     marginBottom: 10,
@@ -23,11 +31,11 @@ import { StyleSheet } from 'react-native';
   textInput:{
 	marginBottom: 20,
 },
-button:{
-	marginTop: 20,
-	textTransform: "uppercase",
-	backgroundColor: '#162C3B',
-    backdropFilter: blur('10px'),
+  button:{
+    marginTop: 20,
+    textTransform: "uppercase",
+    backgroundColor: '#162C3B',
+      backdropFilter: blur('10px'),
     border: 'none',
     borderRadius: '10px',
     color: '#FFFFFF',

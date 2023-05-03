@@ -6,8 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 // Arreglo vacío que vamos a ir llenando
 
-export const carrosDisponibles = [
-]
+export const carrosDisponibles = []
 //Funcion default que vamos a exportar (Funciona similar a una clase)
 
 export default function CarrosDiponibles(){
@@ -23,10 +22,11 @@ const [error, setError] = useState('');
 
 // Mostrar el carro Disponible; en la capa rentaCarros vamos a manejar ese Booleano a false.
 
-// Validaciones regex para confiamr que en la marca van solo letras y en la placa, letras y numeros. 
 
 const placaRegex = /^[A-Za-z0-9]+$/; // Expresión regular para validar letras y números
 const marcaRegex = /^[A-Za-z ]+$/; // Expresión regular para validar solo letras
+
+// Funcion para buscar placa y confirmar si existe
 
 let isValidPlaca = placaRegex.test(placa);
 let isValidMarca = marcaRegex.test(marca)
@@ -40,7 +40,7 @@ let isValidMarca = marcaRegex.test(marca)
             estado: estado
             }
             carrosDisponibles.push(carro)
-            alert("Carro guardado correctamente.")
+            setError("Carro guardado correctamente.")
 			setPlaca('');
 			setMarca('');
 		} else{
@@ -50,8 +50,8 @@ let isValidMarca = marcaRegex.test(marca)
         else {
             setError("Ingrese por favor los campos para registrar el carro.")
         }
-    
     }
+
 
 	let mostrarCarro = () => {
 		if (placa !== ""){
@@ -65,7 +65,7 @@ let isValidMarca = marcaRegex.test(marca)
 			}	
 	}
 	else{
-		setError('Ingrese la placa para poder buscar un carro.')
+		setError('Ingrese la placa para poder buscar un carro.');
 	}
 }
     
@@ -75,7 +75,16 @@ let isValidMarca = marcaRegex.test(marca)
 	setPlaca('');
 	setMarca('');
 	setEstado('');
-	
+	setError('')
+}
+
+
+const findCarByPlaca = (placa) => {
+  const carro = CarrosDiponibles.find(car => car.placa === placa);
+  if (!carro) {
+    return null; // si no existe el carro con esa placa, retorna null
+  }
+  return carro.estado ? carro :setError ("La placa que ingresaste ya está registrada"); // si el carro existe y está disponible, retorna el carro, de lo contrario retorna
 }
 
     return (
@@ -100,7 +109,7 @@ let isValidMarca = marcaRegex.test(marca)
 			onChangeText={marca => setMarca(marca)}
 			value={marca}
 			/>
-			<Text style={styles.text} value={estado}> El carro está disponible</Text>
+			<Text style={styles.text} value={estado}>{estado ? "El carro está disponible" : "No disponible"}</Text>
 		
 		<Button mode="contained" onPress={guardarCarro} style={styles.button}>
 			Agregar Carro

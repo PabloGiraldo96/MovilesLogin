@@ -4,7 +4,7 @@ import App from '../App.js';
 import { View, Text } from 'react-native';
 import { TextInput, Button, Card, Checkbox } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import { carrosDisponibles } from './carrosDisponibles.js';
+import CarrosDiponibles from './carrosDisponibles.js';
 import { users } from '../App.js';
 
 // Arreglo vacío de carros Rentados
@@ -24,32 +24,31 @@ export default function RentaCarros(){
 
 // Funcion de encontrar el carro y si está disponible guardarlo, sino, mostrar mensaje que no está disponible
 
+
 let guardarCarroRentado = () => {
 
-  let carro = carrosDisponibles.find(carro => carro.placa === placaRenta);
+  const carro = CarrosDiponibles.findCarByPlaca(placaRenta);
+  const userExists = App.userFound(usernameRenta);
 
-	console.log(carro)
-
-  if (carrosDisponibles.estado == false){
-		if(placaRenta != "" && usernameRenta !== "" && fechaRenta !== ""){
-	const renta = {
-		numeroRenta: numeroRenta,
-		placaRenta: placaRenta,
-		usernameRenta: usernameRenta,
-		fechaRenta: fechaRenta
+	if(placaRenta !="" && usernameRenta !="" && fechaRenta !=""){
+		if(carro && userExists){
+			const renta = {
+				numeroRenta: numeroRenta,
+				placaRenta: placaRenta,
+				usernameRenta: usernameRenta,
+				fechaRenta: fechaRenta
 		};
 			carrosRentados.push(renta);
 			carro.estado = false;
-		setError("Renta guardada correctamente.");
+			alert("Renta guardada correctamente.");
 			setplacaRenta('');
 			setusernameRenta('');
 			setFechaRenta('');	
-			}else {	
-				setError('El carro no está disponible')
+			}else {
+			setError('El usuario o la placa no existe')
 			}
-  				}
-   		else {
-			setError("Ingrese la placa, el usuario y la fecha para registrar la renta del carro correctamente.")
+		}else{
+		setError('Por favor ingrese los campos')
 	}
   };
 

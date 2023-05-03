@@ -39,8 +39,12 @@ import { StyleSheet } from 'react-native';
     border: 'none',
     borderRadius: '10px',
     color: '#FFFFFF',
-}
-
+},
+  mensaje: {
+    color: 'green',
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
 });
 
 

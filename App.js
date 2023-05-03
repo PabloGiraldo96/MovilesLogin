@@ -1,8 +1,7 @@
 import styles from './css/styles.js';
 import CarrosDiponibles from './screens/carrosDisponibles.js';
 import RentaCarros from './screens/rentaCarros.js';
-import RegistroUsuario from './screens/RegistroUsuario.js'
-import { handleRegistro } from './screens/RegistroUsuario.js';
+import RegistroUsuario from './screens/RegistroUsuario.js';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity  } from 'react-native';
 import { TextInput, Button, Card } from 'react-native-paper';
@@ -11,22 +10,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-// Arreglo de objetos para quemar los usuarios 
-
-export const users = [{ username: 'Papablo', name: 'Pablo', password: 123456, rol: '1'
-}, {
-  username: 'jairito', name: 'Jairo ', password: 'Yoyo452', rol: '2'
-},
- {
-  username: 'Pedrolo', name: 'Pedro ', password: 'Lopez45', rol: '3'
-},
-]
-
-
 // Instanciamiento de stackNavigator
 
-
 const Stack = createNativeStackNavigator();
+
+export const users = []
 
 //Creacion de la función principal Login donde va la pantalla de inicio de sesión.
 
@@ -36,7 +24,18 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
+  const handleRegister = () => {
+    navigation.navigate('Registro Usuario');
+  };
+// Funcion de comparar el usuario ingresado con el usuario del arreglo
+
   let findUser = users.find(user => user.username == username && user.password == password)
+
+// Funcion de enocntrar el usuario y guardarlo
+
+  const userFound = (user) => {
+    return users.includes(user)
+  }
 
 // Validaciones regex para confirmar que escribe letras y numeros en los campos 
 
@@ -49,14 +48,18 @@ const Login = () => {
 
   if (findUser != undefined && isValidName && isValidPassword) {
     navigation.navigate('Home');
+    setUsername('');
+    setPassword('');
   } else {
     setError('Usuario o contraseña incorrectos');
   }
-
-setUsername('');
-setPassword('');
-
 };
+
+	let limpiarCampos = () => {
+	setUsername('');
+	setPassword('');
+	setError('')
+}
 
   return (
 
@@ -85,18 +88,24 @@ setPassword('');
           <Button mode="contained" onPress={handleLogin} style={styles.button}>
             Ingresar
           </Button>
+        <Button mode="contained" onPress={limpiarCampos} style={styles.button}>
+          Limpiar Datos
+        </Button>
         </Card>
             <TouchableOpacity >
-         <Text style = {styles.phrase} onPress={handleRegistro}>No tienes cuenta? Regístrate! </Text>
+         <Text style = {styles.phrase} onPress={handleRegister}>No tienes cuenta? Regístrate! </Text>
       </TouchableOpacity>
     </View>
   );
 };
 
+ 
+
 const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Bienvenido </Text>
+      <Text style={styles.phrase}>Ingresa los carros en la opción inferior.</Text>
     </View>
   );
 };
@@ -107,12 +116,16 @@ const BottomTab = createBottomTabNavigator();
 const MainStackNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Registro Usuario" component={RegistroUsuario} />
+      <Stack.Screen name="Login" 
+        component={Login} />
+      <Stack.Screen name="Home" 
+        component={HomeScreen} />
+      <Stack.Screen name="Registro Usuario" 
+        component={RegistroUsuario} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 };
+
 
 // Navigation container, las tres pantallas que se requieren, Usuario, Carros, Rentar carro. 
 
@@ -128,6 +141,5 @@ const App = () => {
     </NavigationContainer>
   );
 };
-
 
 export default App;

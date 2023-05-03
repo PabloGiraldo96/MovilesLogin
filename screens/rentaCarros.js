@@ -4,7 +4,7 @@ import App from '../App.js';
 import { View, Text } from 'react-native';
 import { TextInput, Button, Card, Checkbox } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import CarrosDiponibles from './carrosDisponibles.js';
+import {carrosDisponibles} from './carrosDisponibles.js';
 import { users } from '../App.js';
 
 // Arreglo vacío de carros Rentados
@@ -27,29 +27,47 @@ export default function RentaCarros(){
 
 let guardarCarroRentado = () => {
 
-  const carro = CarrosDiponibles.findCarByPlaca(placaRenta);
-  const userExists = App.userFound(usernameRenta);
+const carro = carrosRentados.find(carro => carro.placaRenta == carrosDisponibles.placa)
+	if(carro){
+	setError("La placa existe")
+	}
+	else{
+	setError("La placa no existe")
+	}
+		
+  let userExists = carrosRentados.find(user => user.usernameRenta == App.username)
+
+  let estadoExist = carrosRentados.find(carro => carro.estado == false)
+
+
+  let numeroRenta = 0;
 
 	if(placaRenta !="" && usernameRenta !="" && fechaRenta !=""){
-		if(carro && userExists){
-			const renta = {
-				numeroRenta: numeroRenta,
-				placaRenta: placaRenta,
-				usernameRenta: usernameRenta,
-				fechaRenta: fechaRenta
-		};
-			carrosRentados.push(renta);
-			carro.estado = false;
-			alert("Renta guardada correctamente.");
-			setplacaRenta('');
-			setusernameRenta('');
-			setFechaRenta('');	
-			}else {
-			setError('El usuario o la placa no existe')
+		if(!carro){
+			if(!userExists){
+				const renta = {
+					numeroRenta: numeroRenta +=1,
+					placaRenta: placaRenta,
+					usernameRenta: usernameRenta,
+					fechaRenta: fechaRenta
+			};
+				carrosRentados.push(renta);
+				estadoExist
+				alert("Renta guardada correctamente.");
+				setplacaRenta('');
+				setusernameRenta('');
+				setFechaRenta('');	
+		}
+			else{
+			setError('El usuario no existe')		
+	}
+}			else {
+			setError('La placa no existe')
 			}
 		}else{
 		setError('Por favor ingrese los campos')
 	}
+	console.log(carrosRentados);
   };
 
 // Funcion de limpiar los campos
@@ -58,7 +76,8 @@ let guardarCarroRentado = () => {
 	setNumeroRenta('');
 	setplacaRenta('');
 	setusernameRenta('');
-	setFechaRenta('');	
+	setFechaRenta('');
+	setError('')	
 }
 
 // Funcion de revisar si el checkbox está checkeado para cambiar el estado del carro en la pantalla CarrosDisponibles

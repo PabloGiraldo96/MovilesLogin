@@ -7,6 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // Arreglo vacío que vamos a ir llenando
 
 export const carrosDisponibles = []
+
 //Funcion default que vamos a exportar (Funciona similar a una clase)
 
 export default function CarrosDiponibles(){
@@ -43,6 +44,7 @@ let isValidMarca = marcaRegex.test(marca)
             setError("Carro guardado correctamente.")
 			setPlaca('');
 			setMarca('');
+			sessionStorage.setItem(carrosDisponibles, placa)
 		} else{
 		setError ("La marca debe ser letras únicamente")
 		}
@@ -54,6 +56,7 @@ let isValidMarca = marcaRegex.test(marca)
 
 
 	let mostrarCarro = () => {
+		  
 		if (placa !== ""){
 			const carroEncontrado = carrosDisponibles.find(carro => carro.placa == placa)
 				if(carroEncontrado){
@@ -69,6 +72,9 @@ let isValidMarca = marcaRegex.test(marca)
 	}
 }
     
+
+
+
 // Funcion de limpiar los campos
 
 	let limpiarCampos = () => {
@@ -76,15 +82,6 @@ let isValidMarca = marcaRegex.test(marca)
 	setMarca('');
 	setEstado('');
 	setError('')
-}
-
-
-const findCarByPlaca = (placa) => {
-  const carro = CarrosDiponibles.find(car => car.placa === placa);
-  if (!carro) {
-    return null; // si no existe el carro con esa placa, retorna null
-  }
-  return carro.estado ? carro :setError ("La placa que ingresaste ya está registrada"); // si el carro existe y está disponible, retorna el carro, de lo contrario retorna
 }
 
     return (

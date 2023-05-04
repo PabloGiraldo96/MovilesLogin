@@ -35,7 +35,7 @@ const RegistroUsuario = () => {
             password: password
             }
             users.push(user)
-            alert("Usuario guardado correctamente.");
+            setError("Usuario guardado correctamente.");
             setName('');
             setUsername('');
             setPassword('');

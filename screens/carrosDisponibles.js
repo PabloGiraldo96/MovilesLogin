@@ -2,11 +2,9 @@ import styles from '../css/styles.js';
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import { TextInput, Button, Card } from 'react-native-paper';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
 // Arreglo vacío que vamos a ir llenando
 
-export const carrosDisponibles = []
+export const Carros = []	
 //Funcion default que vamos a exportar (Funciona similar a una clase)
 
 export default function CarrosDiponibles(){
@@ -22,40 +20,46 @@ const [error, setError] = useState('');
 
 // Mostrar el carro Disponible; en la capa rentaCarros vamos a manejar ese Booleano a false.
 
+let guardarCarro = () =>{
 
 const placaRegex = /^[A-Za-z0-9]+$/; // Expresión regular para validar letras y números
 const marcaRegex = /^[A-Za-z ]+$/; // Expresión regular para validar solo letras
 
 // Funcion para buscar placa y confirmar si existe
 
-let isValidPlaca = placaRegex.test(placa);
-let isValidMarca = marcaRegex.test(marca)
+if(placa !="" && marca != ""){
 
-    let guardarCarro = () =>{
-        if(placa != "" && marca != ""){
-			if(isValidPlaca && isValidMarca){
-        	const carro = {
-            placa: placa,
-            marca: marca,
-            estado: estado
+    if(Carros.find(Carros => Carros.placa == placa) == undefined){
+	let isValidPlaca = placaRegex.test(placa);
+	let isValidMarca = marcaRegex.test(marca)
+        if(isValidPlaca && isValidMarca){
+
+            const carro = {
+                placa: placa,
+                marca: marca,
+                estado: estado
+             }
+             Carros.push(carro)
+             	setError("Carro guardado correctamente")
+             	console.log(Carros)
+            setPlaca('');
+            setMarca('');  
+                }else{
+                    setError("Error en la placa o marca")
+                }
+
+            }else{
+                setError("El carro ya está registrado")
             }
-            carrosDisponibles.push(carro)
-            setError("Carro guardado correctamente.")
-			setPlaca('');
-			setMarca('');
-		} else{
-		setError ("La marca debe ser letras únicamente")
-		}
-    }
-        else {
-            setError("Ingrese por favor los campos para registrar el carro.")
+
+        }else{
+            setError("Ingrese por favor los campos para registrar el carro")
         }
     }
 
-
 	let mostrarCarro = () => {
 		if (placa !== ""){
-			const carroEncontrado = carrosDisponibles.find(carro => carro.placa == placa)
+			const carroEncontrado = Carros.find(carro => carro.placa == placa)
 				if(carroEncontrado){
 				setMarca(carroEncontrado.marca)
 				setEstado(true)
@@ -79,8 +83,8 @@ let isValidMarca = marcaRegex.test(marca)
 }
 
 
-const findCarByPlaca = (placa) => {
-  const carro = CarrosDiponibles.find(car => car.placa === placa);
+ const findCarByPlaca = (placa) => {
+  const carro = Carros.find(car => car.placa == placa);
   if (!carro) {
     return null; // si no existe el carro con esa placa, retorna null
   }

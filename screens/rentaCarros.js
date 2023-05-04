@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import styles from '../css/styles.js';
-import App from '../App.js';
 import { View, Text } from 'react-native';
 import { TextInput, Button, Card, Checkbox } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
-import CarrosDiponibles from './carrosDisponibles.js';
+import { Carros } from './carrosDisponibles.js';
 import { users } from '../App.js';
 
 // Arreglo vacío de carros Rentados
@@ -24,11 +22,10 @@ export default function RentaCarros(){
 
 // Funcion de encontrar el carro y si está disponible guardarlo, sino, mostrar mensaje que no está disponible
 
-
 let guardarCarroRentado = () => {
 
-  const carro = CarrosDiponibles.findCarByPlaca(placaRenta);
-  const userExists = App.userFound(usernameRenta);
+  let carro = Carros.find(carro => carro.placa == placaRenta);
+  let userExists = users.find(users => users.username == usernameRenta);
 
 	if(placaRenta !="" && usernameRenta !="" && fechaRenta !=""){
 		if(carro && userExists){
@@ -40,10 +37,12 @@ let guardarCarroRentado = () => {
 		};
 			carrosRentados.push(renta);
 			carro.estado = false;
-			alert("Renta guardada correctamente.");
+			setError("Renta guardada correctamente.");
+			console.log(carrosRentados)
 			setplacaRenta('');
 			setusernameRenta('');
-			setFechaRenta('');	
+			setFechaRenta('');
+			setChecked(false)	
 			}else {
 			setError('El usuario o la placa no existe')
 			}
@@ -55,7 +54,7 @@ let guardarCarroRentado = () => {
 // Funcion de limpiar los campos
 
 	let limpiarCampos = () => {
-	setNumeroRenta('');
+	setError('');
 	setplacaRenta('');
 	setusernameRenta('');
 	setFechaRenta('');	
@@ -100,6 +99,7 @@ let guardarCarroRentado = () => {
 			status={checked ? 'checked' : 'unchecked'}
 			onPress={() => {
 			setChecked(!checked);
+			Carros.estado = false;
 			}}
 			/>		
 		<Button mode="contained" onPress={guardarCarroRentado} style={styles.button}>

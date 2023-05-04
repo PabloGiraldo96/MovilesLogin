@@ -43,7 +43,7 @@ let estadoExist = Carros.find(carro => carro.estado == true)
 					fechaRenta: fechaRenta
 			};
 				carrosRentados.push(renta);
-				estadoExist
+				estadoExist = false
 				alert("Renta guardada correctamente.");
 				setplacaRenta('');
 				setusernameRenta('');

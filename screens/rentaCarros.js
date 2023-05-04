@@ -3,7 +3,7 @@ import styles from '../css/styles.js';
 import { View, Text } from 'react-native';
 import { TextInput, Button, Card, Checkbox } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import {carrosDisponibles} from './carrosDisponibles.js';
+import {Carros, carrosDisponibles} from './carrosDisponibles.js';
 import { users } from '../App.js';
 
 // Arreglo vacío de carros Rentados
@@ -25,18 +25,11 @@ export default function RentaCarros(){
 
 let guardarCarroRentado = () => {
 
-const carro = carrosRentados.find(carro => carro.placaRenta == carrosDisponibles.placa)
-	if(carro){
-	setError("La placa existe")
-	}
-	else{
-	setError("La placa no existe")
-	}
+let carro = Carros.find(carro => carro.placa == placaRenta)
 		
-  let userExists = carrosRentados.find(user => user.usernameRenta == App.username)
+let userExists = users.find(user => user.username == usernameRenta)
 
-  let estadoExist = carrosRentados.find(carro => carro.estado == false)
-
+let estadoExist = Carros.find(carro => carro.estado == true)
 
   let numeroRenta = 0;
 

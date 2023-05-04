@@ -31,8 +31,6 @@ const Login = () => {
 
   let findUser = users.find(user => user.username == username && user.password == password)
 
-// Validaciones regex para confirmar que escribe letras y numeros en los campos 
-
   const handleLogin = () => {
 
   const nameRegex = /^[A-Za-z]+$/; // Expresión regular para validar solo letras
@@ -44,10 +42,15 @@ const Login = () => {
     navigation.navigate('Home');
     setUsername('');
     setPassword('');
+ 
   } else {
     setError('Usuario o contraseña incorrectos');
   }
 };
+
+
+
+// Funcion limpiar campos
 
 	let limpiarCampos = () => {
 	setUsername('');

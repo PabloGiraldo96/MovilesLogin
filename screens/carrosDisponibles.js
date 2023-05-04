@@ -4,7 +4,8 @@ import { View, Text } from 'react-native';
 import { TextInput, Button, Card } from 'react-native-paper';
 // Arreglo vacío que vamos a ir llenando
 
-export const Carros = []	
+export const Carros = []
+
 //Funcion default que vamos a exportar (Funciona similar a una clase)
 
 export default function CarrosDiponibles(){
@@ -40,24 +41,24 @@ if(placa !="" && marca != ""){
                 estado: estado
              }
              Carros.push(carro)
-             	setError("Carro guardado correctamente")
-             	console.log(Carros)
-            setPlaca('');
-            setMarca('');  
-                }else{
-                    setError("Error en la placa o marca")
+            alert("Carro guardado correctamente")
+            console.log(Carros)
+				setPlaca('');
+				setMarca('');  
+			}else{
+            	setError("Error en la placa o marca")
                 }
-
             }else{
                 setError("El carro ya está registrado")
             }
-
-        }else{
-            setError("Ingrese por favor los campos para registrar el carro")
-        }
+		} else{
+		setError ("La marca debe ser letras únicamente")
+		}
     }
+}
 
 	let mostrarCarro = () => {
+		  
 		if (placa !== ""){
 			const carroEncontrado = Carros.find(carro => carro.placa == placa)
 				if(carroEncontrado){
@@ -73,6 +74,9 @@ if(placa !="" && marca != ""){
 	}
 }
     
+
+
+
 // Funcion de limpiar los campos
 
 	let limpiarCampos = () => {
@@ -80,15 +84,6 @@ if(placa !="" && marca != ""){
 	setMarca('');
 	setEstado('');
 	setError('')
-}
-
-
- const findCarByPlaca = (placa) => {
-  const carro = Carros.find(car => car.placa == placa);
-  if (!carro) {
-    return null; // si no existe el carro con esa placa, retorna null
-  }
-  return carro.estado ? carro :setError ("La placa que ingresaste ya está registrada"); // si el carro existe y está disponible, retorna el carro, de lo contrario retorna
 }
 
     return (
@@ -127,4 +122,3 @@ if(placa !="" && marca != ""){
 	  </Card>
       </View>
     );
-  };

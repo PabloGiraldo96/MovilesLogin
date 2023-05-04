@@ -2,6 +2,7 @@ import styles from '../css/styles.js';
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import { TextInput, Button, Card } from 'react-native-paper';
+
 // Arreglo vacío que vamos a ir llenando
 
 export const Carros = []
@@ -52,10 +53,9 @@ if(placa !="" && marca != ""){
                 setError("El carro ya está registrado")
             }
 		} else{
-		setError ("La marca debe ser letras únicamente")
+		setError ("Complete los campos por favor")
 		}
     }
-}
 
 	let mostrarCarro = () => {
 		  
@@ -73,9 +73,6 @@ if(placa !="" && marca != ""){
 		setError('Ingrese la placa para poder buscar un carro.');
 	}
 }
-    
-
-
 
 // Funcion de limpiar los campos
 
@@ -122,3 +119,4 @@ if(placa !="" && marca != ""){
 	  </Card>
       </View>
     );
+};

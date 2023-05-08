@@ -24,12 +24,16 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
+// Funcion para ir al screen RegistroUsuario
+
   const handleRegister = () => {
     navigation.navigate('Registro Usuario');
   };
 // Funcion de comparar el usuario ingresado con el usuario del arreglo
 
-  let findUser = users.find(user => user.username == username && user.password == password)
+  let findUser = users.find(user => user.username == username && user.password == password);
+
+// Funcion para entrar al Home de la aplicación; carros disponibles. 
 
   const handleLogin = () => {
 
@@ -38,17 +42,16 @@ const Login = () => {
   let isValidName = nameRegex.test(username);
   let isValidPassword = passwordRegex.test(password);
 
-  if (findUser != undefined && isValidName && isValidPassword) {
-    navigation.navigate('Home');
-    setUsername('');
-    setPassword('');
- 
-  } else {
-    setError('Usuario o contraseña incorrectos');
-  }
+if(findUser != "" && isValidName != "" && isValidPassword !=""){
+  if (findUser != undefined){
+      if(isValidPassword){
+            navigation.navigate('Home');
+            setUsername('');
+            setPassword('');
+          }else {setError('Usuario o contraseña inválidos')}
+    } else {setError('Usuario no existe')}
+  } else{setError('Debe ingresar todos los campos') }
 };
-
-
 
 // Funcion limpiar campos
 

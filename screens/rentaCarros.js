@@ -2,69 +2,61 @@ import React, { useState } from 'react';
 import styles from '../css/styles.js';
 import { View, Text } from 'react-native';
 import { TextInput, Button, Card, Checkbox } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
 import {Carros, carrosDisponibles} from './carrosDisponibles.js';
 import { users } from '../App.js';
 
 // Arreglo vacío de carros Rentados
 
-let carrosRentados =[]
+export const carrosRentados =[]
 
 export default function RentaCarros(){
 
 // Declaración de variables con su instancia de estado useState
-
-    const [numeroRenta, setNumeroRenta] = useState('')
     const [placaRenta, setplacaRenta] = useState('')
     const [usernameRenta, setusernameRenta] = useState('')
     const [fechaRenta, setFechaRenta] = useState('')
 	const [error, setError] = useState('');
 	const [checked, setChecked] = React.useState(false);
+ 	const [estado,setEstado] = useState('');
 
 // Funcion de encontrar el carro y si está disponible guardarlo, sino, mostrar mensaje que no está disponible
+
+let contador = 0;
 
 let guardarCarroRentado = () => {
 
 let carro = Carros.find(carro => carro.placa == placaRenta)
-		
+
 let userExists = users.find(user => user.username == usernameRenta)
+	
+let disponible = Carros.find(carro => carro.estado == true)
 
-let estadoExist = Carros.find(carro => carro.estado == true)
-
-  let numeroRenta = 0;
+console.log(carro, userExists, disponible);
 
 	if(placaRenta !="" && usernameRenta !="" && fechaRenta !=""){
-		if(!carro){
-			if(!userExists){
+		if(carro != undefined){
+			if(userExists != undefined){
 				const renta = {
-					numeroRenta: numeroRenta +=1,
+					numeroRenta: contador +1,
 					placaRenta: placaRenta,
 					usernameRenta: usernameRenta,
-					fechaRenta: fechaRenta
-			};
+					fechaRenta: fechaRenta};
 				carrosRentados.push(renta);
-				estadoExist = false
-				alert("Renta guardada correctamente.");
+				alert(`El carro de placa ${carro.placa} ha sido rentado por ${usernameRenta}`);
 				setplacaRenta('');
 				setusernameRenta('');
 				setFechaRenta('');	
-		}
-			else{
-			setError('El usuario no existe')		
-	}
-}			else {
-			setError('La placa no existe')
-			}
-		}else{
-		setError('Por favor ingrese los campos')
-	}
+				carro.estado == false;
+				} else {setError('El usuario o la placa no existe')}
+			} else {setError('La placa no existe')}
+		} else { setError('Por favor ingrese los campos')}
 	console.log(carrosRentados);
   };
 
 // Funcion de limpiar los campos
 
 	let limpiarCampos = () => {
-	setError('');
+	setChecked(false);
 	setplacaRenta('');
 	setusernameRenta('');
 	setFechaRenta('');

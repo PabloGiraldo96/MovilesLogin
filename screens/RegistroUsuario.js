@@ -21,35 +21,31 @@ const RegistroUsuario = () => {
 
 // Validaciones de campos en blanco
 
-    if (name != "" && username != "" && password != "") {
-
+    if (name != "" && username != "" && password != ""){
       // Validaciones de que el nombre si sean solo letras y la contraseña letras y numeros. 
-
         if(isValidName && isValidPassword){
-
-        // Sí pasa las validaciones, entonces registra un nuevo usuario
-
+// Validacion para confirmar que usuario no existe
+          if(users.find(user => user.username == username) == undefined){
+// Sí pasa las validaciones, entonces registra un nuevo usuario
           const user = {
             name: name,
             username: username,
             password: password
             }
             users.push(user)
-            setError("Usuario guardado correctamente.");
-            setName('');
-            setUsername('');
-            setPassword('');
-      navigation.navigate('Login');
-    }else{
-      setError('El nombre solo permite letras y espacios')
-  }
-    } else{
-      setError('Debe llenar los campos');
-    }
-    setName('');
-    setPassword('');
-console.log(users);
-  }
+              setError("Usuario guardado correctamente.");
+              setName('');
+              setUsername('');
+              setPassword('');
+            navigation.navigate('Login');
+      } else { setError("El usuario ya existe")}
+    } else { setError('El nombre solo permite letras y espacios')}
+  } else { setError('Debe llenar los campos')}
+          setName('');
+          setUsername('');
+          setPassword('');
+          console.log(users);
+}
 
 
 

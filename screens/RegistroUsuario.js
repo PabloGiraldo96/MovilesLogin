@@ -15,6 +15,7 @@ const RegistroUsuario = () => {
 
   const handleRegistro = () => {
     const nameRegex = /^[A-Za-z ]+$/; // Expresión regular para validar solo letras
+
     const passwordRegex = /^[A-Za-z0-9]+$/; // Expresión regular para validar letras y números
     let isValidName = nameRegex.test(username);
     let isValidPassword = passwordRegex.test(password);

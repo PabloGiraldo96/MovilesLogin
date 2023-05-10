@@ -2,7 +2,7 @@ import styles from '../css/styles.js';
 import {carrosRentados, RentaCarros} from './rentaCarros.js';
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
-import { TextInput, Button, Card } from 'react-native-paper';
+import { TextInput, Button, Card, Modal, Portal, Provider	} from 'react-native-paper';
 
 // Arreglo vacío que vamos a ir llenando
 export const Carros = []
@@ -15,13 +15,15 @@ const [placa, setPlaca] = useState('')
 const [marca, setMarca] = useState('')
 const [estado, setEstado] = useState('')
 const [error, setError] = useState('');
+const [visible, setVisible] = React.useState(false);
+const [carrosDisponibles, setCarrosDisponibles] = useState([]);
 
 // Función de guardar un carro en el arreglo. 
 // Mostrar el carro Disponible; en la capa rentaCarros vamos a manejar ese Booleano a false.
 
 let guardarCarro = () =>{
 const placaRegex = /^[A-Za-z0-9]+$/; // Expresión regular para validar letras y números
-const marcaRegex = /^[A-Za-z ]+$/; // Expresión regular para validar solo letras
+const marcaRegex = /^[A-Za-z 0-9]+$/; // Expresión regular para validar solo letras
 
 // Funcion para buscar placa y confirmar si existe
 
@@ -62,6 +64,34 @@ let mostrarCarro = () => {
 	}
 }
 
+//Listar carros disponibles 
+
+let listarCarrosDisponibles = () => {
+// Modal de la función listarCarrosDisponibles
+ const showModal = () => setVisible(true);
+ const hideModal = () => setVisible(false);
+ const containerStyle = {backgroundColor: 'white', padding: 20};
+
+const carrosDisponibles = Carros.filter(carro => carro.estado);
+  setCarrosDisponibles(carrosDisponibles);
+  console.log(carrosDisponibles);
+  showModal();
+
+ return (
+	<View>
+		<Provider>
+		<Portal>
+			<Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
+			{carrosDisponibles.map((carro, index) => (
+				<Text key={index}> {carrosDisponibles} </Text>
+			))}
+			</Modal>
+		</Portal>
+		</Provider>
+	</View>
+ 	)
+}
+
 
 // Funcion de limpiar los campos
 
@@ -71,6 +101,7 @@ let mostrarCarro = () => {
 	setEstado('');
 	setError('')
 }
+
 
     return (
         <View style={styles.container}>
@@ -100,6 +131,10 @@ let mostrarCarro = () => {
 		</Button>
 		<Button mode="contained" onPress={mostrarCarro} style={styles.button}>
 			Mostrar Carro
+		</Button>
+		<Button mode="contained" onPress={listarCarrosDisponibles} style={styles.button}>
+		Mostrar carros disponibles
+
 		</Button>
 		<Button mode="contained" onPress={limpiarCampos} style={styles.button}>
 			Limpiar Datos
